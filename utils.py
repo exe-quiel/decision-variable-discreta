@@ -48,7 +48,10 @@ def calcular_valores_max(matriz):
         mayores[i] = max(matriz[i])
     return mayores
 
-## Criterio de Wald (pesimista, maximin) -> max(min(bij))
+
+## CRITERIOS PARA INCERTIDUMBRE (NO CONOZCO LAS PROBABILIDADES)
+
+## 1. Criterio de Wald (pesimista, maximin) -> max(min(bij))
 
 def calcular_maximin(matriz):
     valores_min = calcular_valores_min(matriz)
@@ -71,7 +74,7 @@ def calcular_maximin(matriz):
     # valores mínimos de cada fila, valor maximin, filas con el valor maximin, celdas de la matriz original con el valor maximin
     return valores_min, mayor, y_mayores, celdas_mayores
 
-## Criterio optimista (maximax)
+## 2. Criterio optimista (maximax)
 
 def calcular_maximax(matriz):
     valores_max = calcular_valores_max(matriz)
@@ -94,7 +97,7 @@ def calcular_maximax(matriz):
     # valores máximos de cada fila, valor maximax, filas con el valor maximax, celdas de la matriz original con el valor maximax
     return valores_max, mayor, y_mayores, celdas_mayores
 
-## Criterio de Hurwicz
+## 3. Criterio de Hurwicz
 
 coeficiente_optimismo = 0.5
 
@@ -122,4 +125,15 @@ def calcular_hurwicz(matriz, coef_optim):
      # columna de valores, valor mayor, filas que contienen el mayor
     return valores_hurwicz, mayor, y_mayores
 
-## 
+## 4. Criterio de Savage (arrepentimiento, minimax)
+
+## CRITERIOS PARA RIESGO (CONOZCO LAS PROBABILIDADES, P(x) < 1, SUMATORIA P(x) = 1)
+
+## 5. Máximo beneficio esperado
+
+## 6. Beneficio esperado con información perfecta (BEIP)
+
+## 7. Valor esperado con información perfecta (VEIP)
+
+
+

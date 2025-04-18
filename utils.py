@@ -1,16 +1,26 @@
 import random
 
 def cargar_matriz_random(n_filas, n_columnas, n_min, n_max):
-    matriz = [[]]
+    matriz = cargar_matriz_valor(n_filas, n_columnas)
     for y in range(n_filas):
         for x in range(n_columnas):
             matriz[y][x] = random.uniform(n_min, n_max)
     return matriz
 
+def cargar_matriz_valor(n_filas, n_columnas, valor=0):
+    matriz = []
+    for indice_fila in range(n_filas):
+        fila = []
+        for indice_columna in range(n_columnas):
+            fila.append(valor)
+        matriz.append(fila)
+    return matriz
+
 def cargar_matriz_ejercicio():
     n_filas = 4
     n_columnas = 4
-    matriz = [[]]
+    matriz = cargar_matriz_valor(n_filas, n_columnas)
+    
     # Acción: Compro grande
     matriz[0][0] =  2.5 # Estado natural: muy buenas
     matriz[0][1] =  0.0 # Estado natural: buenas
@@ -34,40 +44,49 @@ def cargar_matriz_ejercicio():
 
     return matriz, n_filas, n_columnas
 
-def calcular_valores_min(matriz):
+def calcular_valores_min_fila(matriz):
+    '''
+    Recibe una matriz y devuelve una lista que contiene los valores mínimos de cada fila
+    '''
     #return [min(matriz[i]) for i in len(matriz)]
     menores = []
-    for i in len(matriz):
-        menores[i] = min(matriz[i])
+    for i in range(len(matriz)):
+        menores.append(min(matriz[i]))
     return menores
 
-def calcular_valores_max(matriz):
+def calcular_valores_max_fila(matriz):
+    '''
+    Recibe una matriz y devuelve una lista que contiene los valores máximos de cada fila
+    '''
     #return [max(matriz[i]) for i in len(matriz)]
     mayores = []
-    for i in len(matriz):
-        mayores[i] = max(matriz[i])
+    for i in range(len(matriz)):
+        mayores.append(max(matriz[i]))
     return mayores
 
 
-## CRITERIOS PARA INCERTIDUMBRE (NO CONOZCO LAS PROBABILIDADES)
+## CRITERIOS PARA INCERTIDUMBRE (CUANDO NO CONOZCO LAS PROBABILIDADES)
 
 ## 1. Criterio de Wald (pesimista, maximin) -> max(min(bij))
 
 def calcular_maximin(matriz):
-    valores_min = calcular_valores_min(matriz)
+    '''
+    Recibe una matriz, obtiene los valores mínimos de cada fila y devuelve el máximo de esos valores
+    '''
+    valores_min = calcular_valores_min_fila(matriz)
     mayor = valores_min[0]
     y_mayores = [0]
-    for y in len(valores_min):
-        if valores_min[0] > mayor:
-            mayor = valores_min[0]
+    for y in range(len(valores_min)):
+        if valores_min[y] > mayor:
+            mayor = valores_min[y]
             y_mayores.clear()
             y_mayores.append(y)
-        elif valores_min[0] == mayor:
+        elif valores_min[y] == mayor:
             y_mayores.append(y)
 
     celdas_mayores = []
-    for y in len(matriz):
-        for x in len(matriz[y]):
+    for y in range(len(matriz)):
+        for x in range(len(matriz[y])):
             if matriz[y][x] == mayor:
                 celdas_mayores.append((x, y))
 
@@ -77,20 +96,24 @@ def calcular_maximin(matriz):
 ## 2. Criterio optimista (maximax)
 
 def calcular_maximax(matriz):
-    valores_max = calcular_valores_max(matriz)
+    '''
+    Recibe una matriz, obtiene los valores máximos de cada fila y devuelve el máximo de esos valores
+    '''
+    valores_max = calcular_valores_max_fila(matriz)
     mayor = valores_max[0]
-    y_mayores = [0]
-    for y in len(valores_max):
-        if valores_max[0] > mayor:
-            mayor = valores_max[0]
+    #y_mayores = []
+    y_mayores = []
+    for y in range(len(valores_max)):
+        if valores_max[y] > mayor:
+            mayor = valores_max[y]
             y_mayores.clear()
             y_mayores.append(y)
-        elif valores_max[0] == mayor:
+        elif valores_max[y] == mayor:
             y_mayores.append(y)
 
     celdas_mayores = []
-    for y in len(matriz):
-        for x in len(matriz[y]):
+    for y in range(len(matriz)):
+        for x in range(len(matriz[y])):
             if matriz[y][x] == mayor:
                 celdas_mayores.append((x, y))
 
@@ -99,22 +122,21 @@ def calcular_maximax(matriz):
 
 ## 3. Criterio de Hurwicz
 
-coeficiente_optimismo = 0.5
-
 def calcular_valores_hurwicz(matriz, coef_optim):
-    valores_max = calcular_valores_max(matriz)
-    valores_min = calcular_valores_min(matriz)
+    valores_max = calcular_valores_max_fila(matriz)
+    valores_min = calcular_valores_min_fila(matriz)
     #return [coef_optim * valores_max[i] + (1 - coef_optim) * valores_min[i] for i in len(matriz)]
     valores_hurwicz = []
-    for i in len(matriz):
-        valores_hurwicz[i] = coef_optim * valores_max[i] + (1 - coef_optim) * valores_min[i]
+    for i in range(len(matriz)):
+        valores_hurwicz.append(coef_optim * valores_max[i] + (1 - coef_optim) * valores_min[i])
     return valores_hurwicz
 
 def calcular_hurwicz(matriz, coef_optim):
     valores_hurwicz = calcular_valores_hurwicz(matriz, coef_optim)
     mayor = valores_hurwicz[0]
-    y_mayores = [0]
-    for i in len(valores_hurwicz)[1:]:
+    #y_mayores = [0]
+    y_mayores = []
+    for i in range(len(valores_hurwicz)):
         if valores_hurwicz[i] > mayor:
             mayor = valores_hurwicz[i]
             y_mayores.clear()
@@ -127,6 +149,48 @@ def calcular_hurwicz(matriz, coef_optim):
 
 ## 4. Criterio de Savage (arrepentimiento, minimax)
 
+def construir_matriz_arrepentimiento(matriz):
+    # Por cada estado (columna) de la matriz original,
+    # calculo el arrepentimiento para cada acción (fila)
+    # si se da ese estado
+    matriz_arrepentimiento = cargar_matriz_valor(len(matriz), len(matriz[0]))
+    for indice_columna in range(len(matriz[0])):
+        valores_columna = []
+        for fila in matriz:
+            valores_columna.append(fila[indice_columna])
+        valor_maximo_columna = max(valores_columna)
+        for indice_fila in range(len(valores_columna)):
+            valor_beneficio = valores_columna[indice_fila]
+            valor_arrepentimiento = valor_maximo_columna - valor_beneficio
+            matriz_arrepentimiento[indice_fila][indice_columna] = valor_arrepentimiento
+    return matriz_arrepentimiento
+
+def calcular_savage(matriz):
+    matriz_arrepentimiento = construir_matriz_arrepentimiento(matriz)
+    valores_max_fila = calcular_valores_max_fila(matriz_arrepentimiento)
+
+    menor = valores_max_fila[0]
+    y_menores = [0]
+    for y in range(len(valores_max_fila)):
+        if valores_max_fila[y] < menor:
+            menor = valores_max_fila[y]
+            y_menores.clear()
+            y_menores.append(y)
+        elif valores_max_fila[y] == menor:
+            y_menores.append(y)
+
+    celdas_menores = []
+    for y in range(len(matriz_arrepentimiento)):
+        for x in range(len(matriz_arrepentimiento[y])):
+            if matriz_arrepentimiento[y][x] == menor:
+                celdas_menores.append((x, y))
+
+    # valores máximos de cada fila (matriz de arrepentimiento)
+    # valor minimax
+    # filas con el valor minimax (matriz de arrepentimiento)
+    # celdas de la matriz de arrepentimiento con el valor minimax
+    return valores_max_fila, menor, y_menores, celdas_menores
+
 ## CRITERIOS PARA RIESGO (CONOZCO LAS PROBABILIDADES, P(x) < 1, SUMATORIA P(x) = 1)
 
 ## 5. Máximo beneficio esperado
@@ -137,3 +201,14 @@ def calcular_hurwicz(matriz, coef_optim):
 
 
 
+## Main
+
+if __name__ == '__main__':
+    #matriz, _, _ = cargar_matriz_ejercicio()
+    matriz = cargar_matriz_random(5, 5, -4, 4)
+    print(matriz)
+    print("Wald: " + str(calcular_maximax(matriz)))
+    #print(calcular_maximin(matriz))
+    #print(calcular_hurwicz(matriz, 0.5))
+    #print(calcular_savage(matriz))
+    

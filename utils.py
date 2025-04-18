@@ -64,6 +64,16 @@ def calcular_valores_max_fila(matriz):
         mayores.append(max(matriz[i]))
     return mayores
 
+def calcular_valores_max_columna(matriz):
+    '''
+    Recibe una matriz y devuelve una lista que contiene los valores máximos de cada columna
+    '''
+    mayores = []
+    for i in range(len(matriz[0])):
+        valores_columna = [fila[i] for fila in matriz]
+        mayores.append(max(valores_columna))
+    return mayores
+
 
 ## CRITERIOS PARA INCERTIDUMBRE (CUANDO NO CONOZCO LAS PROBABILIDADES)
 
@@ -185,30 +195,74 @@ def calcular_savage(matriz):
             if matriz_arrepentimiento[y][x] == menor:
                 celdas_menores.append((x, y))
 
+    # matriz de arrepentimiento
     # valores máximos de cada fila (matriz de arrepentimiento)
     # valor minimax
     # filas con el valor minimax (matriz de arrepentimiento)
     # celdas de la matriz de arrepentimiento con el valor minimax
-    return valores_max_fila, menor, y_menores, celdas_menores
+    return matriz_arrepentimiento, valores_max_fila, menor, y_menores, celdas_menores
 
 ## CRITERIOS PARA RIESGO (CONOZCO LAS PROBABILIDADES, P(x) < 1, SUMATORIA P(x) = 1)
 
 ## 5. Máximo beneficio esperado
 
+def calcular_max_beneficio_esperado(matriz, vector_probabilidades=[], usar_laplace=False):
+    if usar_laplace:
+        vector_probabilidades = [1/len(matriz[0]) for _ in range(len(matriz))]
+        print(vector_probabilidades)
+
+    vector_esperanzas = []
+    for fila in matriz:
+        esperanza = 0
+        for indice_columna in range(len(fila)):
+            esperanza += vector_probabilidades[indice_columna] * fila[indice_columna]
+        vector_esperanzas.append(esperanza)
+
+    mayor = vector_esperanzas[0]
+    #y_mayores = [0]
+    y_mayores = []
+    for i in range(len(vector_esperanzas)):
+        if vector_esperanzas[i] > mayor:
+            mayor = vector_esperanzas[i]
+            y_mayores.clear()
+            y_mayores.append(i)
+        elif vector_esperanzas[i] == mayor:
+            y_mayores.append(i)
+    return vector_esperanzas, mayor, y_mayores
+
 ## 6. Beneficio esperado con información perfecta (BEIP)
 
-## 7. Valor esperado con información perfecta (VEIP)
+def calcular_beip(matriz, vector_probabilidades=[], usar_laplace=False):
+    if usar_laplace:
+        vector_probabilidades = [1/len(matriz[0]) for _ in range(len(matriz))]
+        print(vector_probabilidades)
 
+    valores_max_columna = calcular_valores_max_columna(matriz)
+
+    beip = 0
+    for indice_columna in range(len(valores_max_columna)):
+        beip += vector_probabilidades[indice_columna] * valores_max_columna[indice_columna]
+
+    return beip
+
+## 7. Valor esperado con información perfecta (VEIP)
+def calcular_veip(matriz, vector_probabilidades=[], usar_laplace=False):
+    beip = calcular_beip(matriz, vector_probabilidades, usar_laplace)
+    _, max_esperanza, _ = calcular_max_beneficio_esperado(matriz, vector_probabilidades, usar_laplace)
+    return beip - max_esperanza
 
 
 ## Main
 
 if __name__ == '__main__':
-    #matriz, _, _ = cargar_matriz_ejercicio()
-    matriz = cargar_matriz_random(5, 5, -4, 4)
+    matriz, _, _ = cargar_matriz_ejercicio()
+    #matriz = cargar_matriz_random(5, 5, -4, 4)
     print(matriz)
-    print("Wald: " + str(calcular_maximax(matriz)))
+    #print("Wald: " + str(calcular_maximax(matriz)))
     #print(calcular_maximin(matriz))
-    #print(calcular_hurwicz(matriz, 0.5))
+    #print(calcular_hurwicz(matriz, 0.4))
     #print(calcular_savage(matriz))
+    #print(calcular_max_beneficio_esperado(matriz, [0.2, 0.2, 0.4, 0.2]))
+    #print(calcular_beip(matriz, [0.2, 0.2, 0.4, 0.2]))
+    print(calcular_veip(matriz, [0.2, 0.2, 0.4, 0.2]))
     

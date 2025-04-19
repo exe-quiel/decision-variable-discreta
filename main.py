@@ -78,7 +78,6 @@ def handle_col_spinbox():
     global headers_columnas
     global sheet
     n_col_nuevo = int(columnas_spinbox.get())
-    print(f'n_col_nuevo: {n_col_nuevo} | len(matriz): {len(matriz)} | {n_col_nuevo > len(matriz[0])}')
     actualizar = False
     if n_col_nuevo > len(matriz[0]): # Agrego columna
         for fila in matriz:

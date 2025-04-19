@@ -42,7 +42,6 @@ class DoubleEntryTable(tk.Frame):
         for entry in self.entries:
             value_pos = str(entry).split('.')[-1].split('-')
             x, y = int(value_pos[0]), int(value_pos[1])
-            print(x, y)
             self.values[y][x] = float(entry.get())
         return self.values
 
@@ -66,7 +65,8 @@ if __name__ == '__main__':
                      [[1, 2, 3, 4, 5, 6], [5, 6, 7, 8, 1, 1], [9, 10, 11, 12, 2, 2]],
                      ['Col 1', 'Col 2', 'Col 3', 'Col 4', 'Col 5', 'Col 6'],
                      ['Row 1', 'Row 2', 'Row 3'],
-                     on_header_click=read_str_and_replace_header)
+                     on_header_click=read_str_and_replace_header).pack()
+
     root.mainloop()
 
 

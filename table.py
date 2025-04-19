@@ -1,9 +1,9 @@
 import tkinter as tk
 
-class DoubleEntryTable(tk.Frame):
+class DoubleEntryTable(tk.LabelFrame):
 
     def __init__(self, parent, values, column_headers, row_headers, on_header_click=None, disable_values=False, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.LabelFrame.__init__(self, parent, text='TEST', *args, **kwargs)
 
         self.parent = parent
         self.values = values
@@ -14,11 +14,13 @@ class DoubleEntryTable(tk.Frame):
 
 
         for col_index in range(len(column_headers)):
-            col_label = tk.Label(self, text=column_headers[col_index], width=10, padx=0, borderwidth=1, relief=tk.GROOVE, bg='black', fg='white')
+            #col_label = tk.Label(self, text=column_headers[col_index], width=10, padx=0, borderwidth=1, relief=tk.GROOVE, bg='black', fg='white')
+            col_label = tk.Label(self, text=column_headers[col_index], width=10, padx=0)
             col_label.grid(column=col_index + 1, row=0, padx=0, pady=0, sticky=tk.NSEW)
             col_label.bind('<Button-1>', on_header_click)
         for row_index in range(len(row_headers)):
-            row_label = tk.Label(self, text=row_headers[row_index], width=10, padx=0, borderwidth=1, relief=tk.GROOVE, bg='black', fg='white')
+            #row_label = tk.Label(self, text=row_headers[row_index], width=10, padx=0, borderwidth=1, relief=tk.GROOVE, bg='black', fg='white')
+            row_label = tk.Label(self, text=row_headers[row_index], width=10, padx=0)
             row_label.grid(column=0, row=1 + row_index, padx=0, pady=0, sticky=tk.NSEW)
             row_label.bind('<Button-1>', on_header_click)
         for value_row_index in range(len(values)):
@@ -42,7 +44,7 @@ class DoubleEntryTable(tk.Frame):
         hscrollbar.grid(column=0, row=len(column_headers) + 1, columnspan=len(column_headers) + 1, sticky=tk.EW)
         '''
 
-        self.pack(fill=tk.BOTH, expand=tk.TRUE)
+        self.pack(anchor=tk.NW)
 
 
 if __name__ == '__main__':

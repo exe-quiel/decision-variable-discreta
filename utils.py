@@ -251,7 +251,6 @@ def calcular_veip(matriz, vector_probabilidades=[], usar_laplace=False):
     _, max_esperanza, _ = calcular_max_beneficio_esperado(matriz, vector_probabilidades, usar_laplace)
     return beip - max_esperanza
 
-
 ## Main
 
 if __name__ == '__main__':

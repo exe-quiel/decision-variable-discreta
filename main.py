@@ -72,13 +72,59 @@ sheet.grid(column=0, row=0)
 
 sheet_config_frame = tk.Frame(frame_datos)
 
+def handle_col_spinbox():
+    global filas_spinbox
+    global matriz
+    global headers_columnas
+    global sheet
+    n_col_nuevo = int(columnas_spinbox.get())
+    print(f'n_col_nuevo: {n_col_nuevo} | len(matriz): {len(matriz)} | {n_col_nuevo > len(matriz[0])}')
+    actualizar = False
+    if n_col_nuevo > len(matriz[0]): # Agrego columna
+        for fila in matriz:
+            fila.append(0.0)
+        headers_columnas.append(f'Columna {columnas_spinbox.get()}')
+        actualizar = True
+    elif n_col_nuevo < len(matriz[0]): # Elimino columna
+        matriz = [fila[:-1] for fila in matriz]
+        headers_columnas = headers_columnas[:-1]
+        actualizar = True
+    if actualizar:
+        sheet.destroy()
+        sheet = DoubleEntryTable(frame_datos, matriz, headers_columnas, headers_filas, read_str_and_replace_header)
+        sheet.grid(column=0, row=0)
+
+def handle_row_spinbox():
+    global filas_spinbox
+    global matriz
+    global headers_filas
+    global sheet
+    n_filas_nuevo = int(filas_spinbox.get())
+    actualizar = False
+    if n_filas_nuevo > len(matriz): # Agrego columna
+        matriz.append([0.0 for _ in range(len(matriz[0]))])
+        headers_filas.append(f'Fila {filas_spinbox.get()}')
+        actualizar = True
+    elif n_filas_nuevo < len(matriz): # Elimino columna
+        matriz = matriz[:-1]
+        headers_filas = headers_filas[:-1]
+        actualizar = True
+    if actualizar:
+        sheet.destroy()
+        sheet = DoubleEntryTable(frame_datos, matriz, headers_columnas, headers_filas, read_str_and_replace_header)
+        sheet.grid(column=0, row=0)
+
 columnas_frame = tk.LabelFrame(sheet_config_frame, text='Columnas', borderwidth=0)
-columnas_spinbox = tk.Spinbox(columnas_frame, values=[i for i in range(2, 11)])
+columnas_spinbox = tk.Spinbox(columnas_frame, values=[i for i in range(2, 11)], command=handle_col_spinbox)
+columnas_spinbox.delete(0, tk.END)
+columnas_spinbox.insert(0, 4)
 columnas_spinbox.pack()
 columnas_frame.grid(column=1, row=0)
 
 filas_frame = tk.LabelFrame(sheet_config_frame, text='Filas', borderwidth=0)
-filas_spinbox = tk.Spinbox(filas_frame, values=[i for i in range(2, 11)])
+filas_spinbox = tk.Spinbox(filas_frame, values=[i for i in range(2, 11)], command=handle_row_spinbox)
+filas_spinbox.delete(0, tk.END)
+filas_spinbox.insert(0, 4)
 filas_spinbox.pack()
 filas_frame.grid(column=1, row=1)
 

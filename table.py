@@ -35,7 +35,7 @@ class DoubleEntryTable(tk.Frame):
                 value_entry.grid(column=value_col_index + 1, row=value_row_index + 1, pady=0, padx=0, sticky=tk.NSEW)
                 self.entries.append(value_entry)
 
-        self.pack()
+        #self.pack()
 
     def get_values_as_list(self):
         #self.values = []

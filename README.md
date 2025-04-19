@@ -22,6 +22,6 @@ Además, calcula el beneficio esperado con información perfecta (BEIP) y valor 
 
 Para ejecutarlo, seguir las instrucciones:
 
-1. clonar el repositorio con el comando `git clone https://github.com/exe-quiel/decision-variable-discreta.git` o descargar los archivos `main.py`, `table.py` y `utils.py` en un mismo directorio
+1. clonar el repositorio con el comando `git clone https://github.com/exe-quiel/decision-variable-discreta.git` o descargar los archivos `main.py`, `criterios.py`, `table.py` y `utils.py` en un mismo directorio
 
 2. hacer doble clic en `main.py` o, desde una terminal, ejecutar `python main.py`

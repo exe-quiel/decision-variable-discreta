@@ -1,22 +1,25 @@
 # Criterios para la toma de decisiones con variables discretas
 
-Este trabajo implementa los criterios vistos en clase, a saber:
+![alt text](image.png)
 
-## Criterios para situación de incertidumbre
+Este trabajo consiste en un programa que permite completar una tabla de acciones y estados de la naturaleza y analiza los datos indicados según los criterios para la toma de decisiones con variables discretas que se vieron en clase.
 
-### Criterio de Wald, maximin, pesimista
+Los criterios incluidos son:
 
-### Criterio maximax u optimista
+- criterio de Wald, maximin o pesimista
 
-### Criterio de Hurwicz
+- criterio maximax u optimista
 
-### Criterio de Savage o de arrepentimiento
+- criterio de Hurwicz
 
-## Criterios para situación de riesgo
+- criterio de Savage o de arrepentimiento
 
-### Criterio máximo beneficio esperado
+- criterio máximo beneficio esperado
 
-### Beneficio esperado con información perfecta (BEIP)
+Además, calcula también el beneficio esperado con información perfecta (BEIP) y valor esperado con información perfecta (VEIP).
 
-### Valor esperado con información perfecta (VEIP)
+Para ejecutarlo, seguir las instrucciones:
 
+1. el repositorio con el comando `git clone https://github.com/exe-quiel/decision-variable-discreta.git` o descargar los archivos `main.py`, `table.py` y `utils.py` en un mismo directorio.
+
+2. hacer doble clic en `main.py` o, desde la una terminal, ejecutar `python main.py`.

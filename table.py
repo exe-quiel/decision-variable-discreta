@@ -1,9 +1,10 @@
 import tkinter as tk
+from tkinter.ttk import *
 
-class DoubleEntryTable(tk.Frame):
+class DoubleEntryTable(Frame):
 
     def __init__(self, parent, values, column_headers, row_headers, on_header_click=None, disable_values=False, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        Frame.__init__(self, parent, *args, **kwargs)
 
         self.parent = parent
         self.values = values
@@ -14,19 +15,19 @@ class DoubleEntryTable(tk.Frame):
 
         for col_index in range(len(column_headers)):
             #col_label = tk.Label(self, text=column_headers[col_index], width=10, padx=0, borderwidth=1, relief=tk.GROOVE, bg='black', fg='white')
-            col_label = tk.Label(self, text=column_headers[col_index], width=10, padx=0)
+            col_label = Label(self, text=column_headers[col_index], width=10)
             col_label.grid(column=col_index + 1, row=0, padx=0, pady=0, sticky=tk.NSEW)
             col_label.bind('<Button-1>', on_header_click)
             self.column_headers.append(col_label)
         for row_index in range(len(row_headers)):
             #row_label = tk.Label(self, text=row_headers[row_index], width=10, padx=0, borderwidth=1, relief=tk.GROOVE, bg='black', fg='white')
-            row_label = tk.Label(self, text=row_headers[row_index], width=10, padx=0)
+            row_label = Label(self, text=row_headers[row_index], width=10)
             row_label.grid(column=0, row=1 + row_index, padx=0, pady=0, sticky=tk.NSEW)
             row_label.bind('<Button-1>', on_header_click)
             self.row_headers.append(row_label)
         for value_row_index in range(len(values)):
             for value_col_index in range(len(values[value_row_index])):
-                value_entry = tk.Entry(self, width=10, relief=tk.RIDGE, borderwidth=1, name=f'{value_col_index}-{value_row_index}', justify=tk.RIGHT)
+                value_entry = Entry(self, width=10, name=f'{value_col_index}-{value_row_index}', justify=tk.RIGHT)
                 value_entry.delete(0, tk.END)
                 value_entry.insert(0, values[value_row_index][value_col_index])
                 #t = tk.Label(f, width=5, background='#ffffff', border=1, borderwidth=1)

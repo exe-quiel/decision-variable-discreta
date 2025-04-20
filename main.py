@@ -1,11 +1,15 @@
 import tkinter as tk
+from tkinter.ttk import *
 import tkinter.simpledialog
-from tkinter.ttk import Notebook, Combobox, Style, Separator
 from table import DoubleEntryTable
 
 from criterios import *
 
 window = tk.Tk()
+
+window.tk.call('source', 'azure.tcl')
+
+window.tk.call('set_theme', 'light')
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 650
@@ -16,7 +20,7 @@ WINDOW_POS_Y = window.winfo_screenheight() // 2 - WINDOW_HEIGHT // 2
 window.geometry(f'+{WINDOW_POS_X}+{WINDOW_POS_Y}')
 window.title('Analizador')
 
-frame_principal = tk.Frame(window)
+frame_principal = Frame(window)
 
 def regenerar_analisis(sheet, parent_frame):
     global wald_frame
@@ -52,7 +56,7 @@ def regenerar_analisis(sheet, parent_frame):
 
 ## Datos
 
-frame_datos = tk.LabelFrame(frame_principal, width=5, text='Datos', padx=5, pady=5)
+frame_datos = LabelFrame(frame_principal, width=5, text='Datos')
 frame_datos.grid(column=0, row=0, sticky=tk.NSEW)
 
 frame_datos.columnconfigure(0, weight=1)
@@ -70,7 +74,7 @@ def read_str_and_replace_header(event):
 sheet = DoubleEntryTable(frame_datos, matriz, headers_columnas, headers_filas, read_str_and_replace_header)
 sheet.grid(column=0, row=0)
 
-sheet_config_frame = tk.Frame(frame_datos)
+sheet_config_frame = Frame(frame_datos)
 
 def handle_col_spinbox():
     global filas_spinbox
@@ -113,21 +117,21 @@ def handle_row_spinbox():
         sheet = DoubleEntryTable(frame_datos, matriz, headers_columnas, headers_filas, read_str_and_replace_header)
         sheet.grid(column=0, row=0)
 
-columnas_frame = tk.LabelFrame(sheet_config_frame, text='Columnas', borderwidth=0)
-columnas_spinbox = tk.Spinbox(columnas_frame, values=[i for i in range(2, 11)], command=handle_col_spinbox)
+columnas_frame = LabelFrame(sheet_config_frame, text='Columnas', borderwidth=0)
+columnas_spinbox = Spinbox(columnas_frame, values=[i for i in range(2, 11)], command=handle_col_spinbox)
 columnas_spinbox.delete(0, tk.END)
 columnas_spinbox.insert(0, 4)
 columnas_spinbox.pack()
 columnas_frame.grid(column=1, row=0)
 
-filas_frame = tk.LabelFrame(sheet_config_frame, text='Filas', borderwidth=0)
-filas_spinbox = tk.Spinbox(filas_frame, values=[i for i in range(2, 11)], command=handle_row_spinbox)
+filas_frame = LabelFrame(sheet_config_frame, text='Filas', borderwidth=0)
+filas_spinbox = Spinbox(filas_frame, values=[i for i in range(2, 11)], command=handle_row_spinbox)
 filas_spinbox.delete(0, tk.END)
 filas_spinbox.insert(0, 4)
 filas_spinbox.pack()
 filas_frame.grid(column=1, row=1)
 
-btn_calcular = tk.Button(sheet_config_frame, text='Calcular')
+btn_calcular = Button(sheet_config_frame, text='Calcular')
 btn_calcular.bind('<Button-1>', lambda e: regenerar_analisis(sheet, frame_analisis))
 btn_calcular.grid(column=1, row=2)
 
@@ -135,7 +139,7 @@ sheet_config_frame.grid(column=1, row=0)
 
 ## Criterios
 
-frame_analisis = tk.Frame(frame_principal, padx=5, pady=5)
+frame_analisis = Frame(frame_principal)
 frame_analisis.grid(column=0, row=2, sticky=tk.NSEW)
 
 wald_frame = Wald(frame_analisis, sheet.get_values_as_list(), sheet.get_row_headers())

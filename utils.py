@@ -85,7 +85,8 @@ def calcular_maximin(matriz):
     '''
     valores_min = calcular_valores_min_fila(matriz)
     mayor = valores_min[0]
-    y_mayores = [0]
+    #y_mayores = [0]
+    y_mayores = []
     for y in range(len(valores_min)):
         if valores_min[y] > mayor:
             mayor = valores_min[y]
@@ -180,7 +181,8 @@ def calcular_savage(matriz):
     valores_max_fila = calcular_valores_max_fila(matriz_arrepentimiento)
 
     menor = valores_max_fila[0]
-    y_menores = [0]
+    #y_menores = [0]
+    y_menores = []
     for y in range(len(valores_max_fila)):
         if valores_max_fila[y] < menor:
             menor = valores_max_fila[y]

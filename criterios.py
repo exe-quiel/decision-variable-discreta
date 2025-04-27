@@ -11,8 +11,17 @@ class Wald(tk.LabelFrame):
         tk.LabelFrame.__init__(self, parent, text='Wald', padx=5, pady=5, *args, **kwargs)
         valores_min, mayor, y_mayores, celdas_mayores = calcular_maximin(matriz)
 
+        #print('Wald ', y_mayores)
+
+        mejor_opcion = ''
+        for y_mayor in y_mayores:
+            mejor_opcion += headers_filas[y_mayor]
+            if y_mayor != y_mayores[len(y_mayores) - 1]:
+                mejor_opcion += ', '
+
         DoubleEntryTable(self, [valores_min], headers_filas, ['Mínimos'], disable_values=True).pack()
-        tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})').pack()
+        #tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})').pack()
+        tk.Label(self, text=f'Mejor opción: {mejor_opcion} ({mayor})').pack()
 
 
 class Maximax(tk.LabelFrame):
@@ -21,8 +30,16 @@ class Maximax(tk.LabelFrame):
         tk.LabelFrame.__init__(self, parent, text='Optimista', padx=5, pady=5, *args, **kwargs)
         valores_max, mayor, y_mayores, celdas_mayores = calcular_maximax(matriz)
 
+        mejor_opcion = ''
+        for y_mayor in y_mayores:
+            mejor_opcion += headers_filas[y_mayor]
+            #print(y_mayor)
+            if y_mayor != y_mayores[len(y_mayores) - 1]:
+                mejor_opcion += ', '
+
         DoubleEntryTable(self, [valores_max], headers_filas, ['Máximos'], disable_values=True).pack()
-        tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})').pack()
+        #tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})').pack()
+        tk.Label(self, text=f'Mejor opción: {mejor_opcion} ({mayor})').pack()
 
 
 class Hurwicz(tk.LabelFrame):
@@ -38,8 +55,16 @@ class Hurwicz(tk.LabelFrame):
 
         valores_hurwicz, mayor, y_mayores = calcular_hurwicz(matriz, coeficiente)
 
+        mejor_opcion = ''
+        for y_mayor in y_mayores:
+            mejor_opcion += headers_filas[y_mayor]
+            #print(y_mayor)
+            if y_mayor != y_mayores[len(y_mayores) - 1]:
+                mejor_opcion += ', '
+
         DoubleEntryTable(self, [valores_hurwicz], headers_filas, ['Valor'], disable_values=True).pack()
-        tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})').pack()
+        #tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})').pack()
+        tk.Label(self, text=f'Mejor opción: {mejor_opcion} ({mayor})').pack()
 
     def get_coeficiente(self):
         return float(self.coef_entry.get())
@@ -51,9 +76,17 @@ class Savage(tk.LabelFrame):
         tk.LabelFrame.__init__(self, parent, text='Savage', padx=5, pady=5, *args, **kwargs)
         matriz_arrepentimiento, valores_savage, menor, y_menores, celdas_menores = calcular_savage(matriz)
 
+        mejor_opcion = ''
+        for y_menor in y_menores:
+            mejor_opcion += headers_filas[y_menor]
+            #print(y_menor)
+            if y_menor != y_menores[len(y_menores) - 1]:
+                mejor_opcion += ', '
+
         DoubleEntryTable(self, matriz_arrepentimiento, headers_columnas, headers_filas, disable_values=True).pack()
         DoubleEntryTable(self, [valores_savage], headers_filas, ['Valor'], disable_values=True).pack()
-        tk.Label(self, text=f'Mejor opción: {headers_filas[y_menores[0]]} ({menor})').pack()
+        #tk.Label(self, text=f'Mejor opción: {headers_filas[y_menores[0]]} ({menor})').pack()
+        tk.Label(self, text=f'Mejor opción: {mejor_opcion} ({menor})').pack()
 
 
 class Esperanza(tk.LabelFrame):
@@ -88,10 +121,20 @@ class Esperanza(tk.LabelFrame):
 
         prob_frame.pack()
 
+        #print('Esperanza ', y_mayores)
+
+        mejor_opcion = ''
+        for y_mayor in y_mayores:
+            mejor_opcion += headers_filas[y_mayor]
+            #print(y_mayor)
+            if y_mayor != y_mayores[len(y_mayores) - 1]:
+                mejor_opcion += ', '
+
         max_esperanza_table = DoubleEntryTable(self, [vector_esperanzas], headers_filas, ['Máx. esp.'], disable_values=True)
         max_esperanza_table.pack()
 
-        max_esperanza_resultado = tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})')
+        #max_esperanza_resultado = tk.Label(self, text=f'Mejor opción: {headers_filas[y_mayores[0]]} ({mayor})')
+        max_esperanza_resultado = tk.Label(self, text=f'Mejor opción: {mejor_opcion} ({mayor})')
         max_esperanza_resultado.pack()
 
         beip_resultado = tk.Label(self, text=f'BEIP: {beip}')
